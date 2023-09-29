@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import HomePage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+     <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+           
+            <ProtectedRoutes>
+              <HomePage />
+            </ProtectedRoutes>
+            
+          }
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      </BrowserRouter>
+    </>
   );
+}
+
+export function ProtectedRoutes(props) {
+  if (localStorage.getItem("user")) {
+    return props.children;
+  } else {
+    return <Navigate to="/login" />;
+  }
 }
 
 export default App;
